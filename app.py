@@ -110,17 +110,13 @@ st.write(f"CUDA Available: {torch.cuda.is_available()}")
 st.write(f"Device: {torch.device('cpu')}")
 
 import os
-# Disable CUDA before any import that might initialize PyTorch
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-
 import torch
+
+# Set PyTorch to use only CPU
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+torch.cuda.is_available = lambda: False
+
 from unsloth import FastLanguageModel
-
-# Ensure torch does not use CUDA
-torch.device('cpu')
-
-# Then initialize your FastLanguageModel (or any other model-related code)
-model = FastLanguageModel()
 
 # Continue with your application code
 
