@@ -241,7 +241,7 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 # Function to generate prompt based on user selections
 def generate_prompt(category, sub_category, clause_type):
     if category and sub_category and clause_type:
-        return f"Generate a {clause_type} clause for {category} -> {sub_category}."
+        return f"Generate a {clause_type} clause for {category} {sub_category}."
     return ""
 
 # Streamlit app
