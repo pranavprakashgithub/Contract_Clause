@@ -225,7 +225,7 @@ import streamlit as st
 import requests
 
 # Define the URL of your API server
-COLAB_SERVER_URL = "https://<your-ngrok-id>.ngrok.io/generate"  # Replace with the actual ngrok URL
+COLAB_SERVER_URL = "https://3916-34-143-243-11.ngrok-free.app"  # Replace with the actual ngrok URL
 
 # Define category, sub-category, and clause type options
 categories = {
