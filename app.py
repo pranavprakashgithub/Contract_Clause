@@ -251,6 +251,9 @@ def main():
     .form-container label {
         color: #FFFFFF; /* This changes the label color inside the form container */
     }
+    label, .stSelectbox label, .stTextArea label, .stFileUploader label {
+        color: white; /* Change this to your desired color */
+    }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
         font-size: 14px;
