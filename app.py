@@ -104,19 +104,28 @@
 
 
 
-import streamlit as st
-
-st.write(f"CUDA Available: {torch.cuda.is_available()}")
-st.write(f"Device: {torch.device('cpu')}")
-
 import os
+import streamlit as st
 import torch
 
-# Set PyTorch to use only CPU
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
-torch.cuda.is_available = lambda: False
+# Disable CUDA completely by setting the environment variable
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
+# Ensure torch does not use CUDA
+torch.device('cpu')
+
+# Import your FastLanguageModel after ensuring CUDA is disabled
 from unsloth import FastLanguageModel
+
+# Check that CUDA is disabled (this line is optional and just for debugging)
+# It will not break in environments where CUDA is unavailable
+st.write(f"CUDA Available: {torch.cuda.is_available()}")
+
+# Now your model can be initialized and run on CPU
+model = FastLanguageModel()
+
+# Rest of your code for the Streamlit app
+# Like the dropdowns, UI elements, and model generation logic
 
 # Continue with your application code
 
