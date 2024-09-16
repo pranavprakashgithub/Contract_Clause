@@ -107,14 +107,16 @@
 import streamlit as st
 import torch
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Forces CPU usage
+import torch
 from unsloth import FastLanguageModel
 
 # Force PyTorch to use CPU
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-if torch.cuda.is_available():
-    torch.device("cpu")
-else:
-    torch.device("cpu")
+device = torch.device("cpu")
+
+# Initialize the model with CPU
+model = FastLanguageModel(device=device)
+
 
 # Initialize LLM (assuming FastLanguageModel needs device argument)
 model = FastLanguageModel(device=device)
