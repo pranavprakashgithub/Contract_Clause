@@ -303,29 +303,32 @@ def main():
         prompt_text = ""  # Initialize prompt_text variable
         if sub_category != "Select Sub-Category":
             clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
+            
+            # Show the prompt field only after Clause Type selection
             if clause_type != "Select Clause Type":
                 # Generate the prompt based on selections
                 prompt_text = generate_prompt(category, sub_category, clause_type)
-
-        # Display prompt field after Clause Type selection
-        st.text_area("Prompt", value=prompt_text, height=80)  # Adjusted height to match content
+                st.text_area("Prompt", value=prompt_text, height=80)  # Show the prompt field
 
         # Generate button
         if st.button("Generate"):
-            # Send request to the Colab server API
-            try:
-                response = requests.post(COLAB_SERVER_URL, json={
-                    'instruction': f"Generate a {clause_type} clause for {category} -> {sub_category}.",
-                    'input_context': prompt_text
-                })
+            if clause_type != "Select Clause Type":  # Ensure clause type is selected
+                # Send request to the Colab server API
+                try:
+                    response = requests.post(COLAB_SERVER_URL, json={
+                        'instruction': f"Generate a {clause_type} clause for {category} -> {sub_category}.",
+                        'input_context': prompt_text
+                    })
 
-                if response.status_code == 200:
-                    generated_clause = response.json().get('response', 'No response received.')
-                    st.text_area("Generated Clause", value=generated_clause, height=200)
-                else:
-                    st.error("Error in generating clause: " + response.text)
-            except Exception as e:
-                st.error("An error occurred while connecting to the server: " + str(e))
+                    if response.status_code == 200:
+                        generated_clause = response.json().get('response', 'No response received.')
+                        st.text_area("Generated Clause", value=generated_clause, height=200)
+                    else:
+                        st.error("Error in generating clause: " + response.text)
+                except Exception as e:
+                    st.error("An error occurred while connecting to the server: " + str(e))
+            else:
+                st.warning("Please select a clause type before generating.")
 
         st.markdown('</div>', unsafe_allow_html=True)  # End of the box
 
