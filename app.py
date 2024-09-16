@@ -245,14 +245,9 @@ def main():
         background-color: #1a1a1a; /* Page background close to black */
         color : white;
     }
-    # .stContainer container {
-    #     background-color: #001f3f; /* Navy blue form field background */
-    #     padding: 20px;
-    #     border-radius: 10px;
-    #     border: 1px solid #ccc;
-    #     margin-bottom: 20px;
-    #     color: white;
-    # }
+    h1 {
+    color : white;
+    }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
         font-size: 14px;
@@ -271,6 +266,10 @@ def main():
         border-radius: 5px;
         border: none;
     }
+    .stButton button:hover {
+    background-color: #455a64;  /* Darker background on hover */
+    color: white;  /* Ensure text stays white on hover */
+}
     </style>
     """, unsafe_allow_html=True)
 
