@@ -245,7 +245,7 @@ def main():
         background-color: #1a1a1a; /* Page background close to black */
         color : white;
     }
-    .box {
+    .container {
         background-color: #001f3f; /* Navy blue form field background */
         padding: 20px;
         border-radius: 10px;
