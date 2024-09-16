@@ -239,17 +239,17 @@ def main():
     st.title("Contract Clause Generator")
 
     # Category selection
-    category = st.selectbox("Category", list(categories.keys()))
+    category = st.selectbox("Category", ["Select Category"] + list(categories.keys()))
 
     # Sub-category selection (dynamically updated based on category)
-    sub_category = st.selectbox("Sub-Category", categories.get(category, []))
+    sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []))
 
     # Clause type selection (dynamically updated based on sub-category)
-    clause_type = st.selectbox("Clause Type", clause_types)
+    clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
 
     # Prompt (dynamically generated based on selected options)
     prompt = st.empty()
-    if category and sub_category and clause_type:
+    if clause_type != "Select Clause Type":
         prompt.text(f"**Prompt:**\n\nGenerate a contract clause for {category} -> {sub_category} -> {clause_type}.")
 
     # Generate button
@@ -271,4 +271,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
