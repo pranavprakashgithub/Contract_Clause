@@ -248,13 +248,20 @@ def main():
     clause_type = st.selectbox("Clause Type", clause_types)
 
     # Prompt (dynamically generated based on selected options)
-    prompt = f"**Prompt:**\n\nGenerate a contract clause for {category} -> {sub_category} -> {clause_type}."
-    st.text_area("Prompt", value=prompt, height=200)
+    prompt = st.empty()
+    if category and sub_category and clause_type:
+        prompt.text(f"**Prompt:**\n\nGenerate a contract clause for {category} -> {sub_category} -> {clause_type}.")
+
+    # Generate button
+    if st.button("Generate"):
+        # Generate clause (replace with your actual logic)
+        generated_clause = "Generated clause based on the selected options."
+        st.text_area("Generated Clause", value=generated_clause, height=200)
 
     # Document upload
     uploaded_file = st.file_uploader("Upload Document")
 
-    # Validation button
+    # Validate button
     if st.button("Validate"):
         if uploaded_file is not None:
             # Perform validation here (e.g., check file format, size)
@@ -264,5 +271,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
