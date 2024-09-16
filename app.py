@@ -274,7 +274,7 @@ def main():
 
     # Start of the box structure
     with st.container():
-        st.markdown('<div class="box">', unsafe_allow_html=True)
+        # st.markdown('<div class="box">', unsafe_allow_html=True)
 
         # Category and Sub-category on the same line
         col1, col2 = st.columns(2)
