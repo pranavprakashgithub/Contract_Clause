@@ -111,7 +111,10 @@ from unsloth import FastLanguageModel
 
 # Force PyTorch to use CPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-device = torch.device("cpu")
+if torch.cuda.is_available():
+    torch.device("cpu")
+else:
+    torch.device("cpu")
 
 # Initialize LLM (assuming FastLanguageModel needs device argument)
 model = FastLanguageModel(device=device)
