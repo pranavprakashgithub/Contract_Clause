@@ -253,7 +253,7 @@ def main():
     }
     label, .stSelectbox label, .stTextArea label, .stFileUploader label {
         color: white; /* Change this to your desired color */
-        font-size: 25px;
+        text-size: 25px;
     }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
