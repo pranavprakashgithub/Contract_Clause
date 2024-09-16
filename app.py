@@ -238,74 +238,80 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 def main():
     st.title("Contract Clause Generator")
 
-    # Apply custom CSS for box structure, background colors, and button styling
+    # Apply custom CSS for the box structure, colors, and button styles
     st.markdown("""
     <style>
-    .main {
-        background-color: #1a1a1a; /* Page background close to black */
-    }
-    .box {
-        background-color: #001f3f; /* Navy blue form field background */
-        padding: 20px;
+    .dropdown-row {
+        background-color: #344550;
         border-radius: 10px;
-        border: 1px solid #ccc;
+        padding: 20px;
         margin-bottom: 20px;
     }
-    .stTextArea textarea {
+    .stTextInput, .stSelectbox, .stTextArea {
+        background-color: #1b2b34;
+        color: #ffffff;
         font-family: Arial, sans-serif;
         font-size: 14px;
-        color: #333;
-        background-color: #f5f5f5;
-        border: 1px solid #ccc;
+    }
+    .stTextArea textarea {
+        color: #ffffff;
+    }
+    .generate-button {
+        background-color: #536875;
+        color: #ffffff;
+        font-size: 16px;
         padding: 10px;
         width: 100%;
-    }
-    .stButton button {
-        background-color: #ff4136; /* Red button background */
-        color: white; /* White button text */
-        width: 100%; /* Full width of form fields */
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
         border: none;
+        border-radius: 5px;
+    }
+    .generate-button:hover {
+        background-color: #405d77;
+        color: #ffffff;
+    }
+    .stTextArea textarea {
+        height: 100px; /* Adjusts the size of the prompt area */
+    }
+    body {
+        background-color: #1e1e1e; /* Page background color */
+        color: #ffffff; /* Text color */
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Start of the box structure
+    # Start of the form
     with st.container():
-        st.markdown('<div class="box">', unsafe_allow_html=True)
-
+        
         # Category and Sub-category on the same line
         col1, col2 = st.columns(2)
         with col1:
-            category = st.selectbox("Category", ["Select Category"] + list(categories.keys()))
+            category = st.selectbox("Category", ["Select Category"] + list(categories.keys()), key='category')
         with col2:
-            sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []))
+            sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []), key='sub_category')
 
         # Clause type dropdown
         if sub_category != "Select Sub-Category":
-            clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
+            clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types, key='clause_type')
         else:
             clause_type = "Select Clause Type"
 
         # Display prompt field after Clause Type selection
         if clause_type != "Select Clause Type":
             prompt_text = f"Generate a contract clause for {category} -> {sub_category} -> {clause_type}."
-            st.text_area("Prompt", value=prompt_text, height=80)  # Adjusted height to match content
+            st.text_area("Prompt", value=prompt_text, height=100, key='prompt')
 
         # Generate button
-        if st.button("Generate"):
+        generate_button = st.button("Generate", key='generate')
+        if generate_button:
             # Placeholder logic for clause generation
             generated_clause = "Generated clause based on the selected options."
             st.text_area("Generated Clause", value=generated_clause, height=200)
 
-        st.markdown('</div>', unsafe_allow_html=True)  # End of the box
-
     # Document upload section outside the box
     with st.container():
         uploaded_file = st.file_uploader("Upload Document")
-        if st.button("Validate"):
+        validate_button = st.button("Validate")
+        if validate_button:
             if uploaded_file is not None:
                 st.success("Document validated successfully!")
             else:
