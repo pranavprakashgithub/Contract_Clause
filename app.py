@@ -236,13 +236,13 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 
 # Create Streamlit app
 def main():
-    st.title("Contract Clause Generator")
+    st.title("GenAI Powered Contract Clause Generator")
 
     # Apply custom CSS for box structure, background colors, and button styling
     st.markdown("""
     <style>
     .main {
-        background-color: #1a1a1a; /* Page background close to black */
+        background-color: #454545; /* Page background close to black */
         color : white;
     }
     h1 {
