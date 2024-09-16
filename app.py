@@ -264,7 +264,7 @@ def main():
     clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
 
     # Prompt (dynamically generated based on selected options)
-    prompt = st.text_area("Prompt", height=200)
+    prompt = st.empty()
     if clause_type != "Select Clause Type":
         prompt.text(f"**Prompt:**\n\nGenerate a contract clause for {category} -> {sub_category} -> {clause_type}.")
 
