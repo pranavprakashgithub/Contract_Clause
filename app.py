@@ -263,7 +263,7 @@ def main():
 
     # Start of the box structure
     with st.container():
-        st.markdown('<div class="box">', unsafe_allow_html=True)
+        # st.markdown('<div class="box">', unsafe_allow_html=True)
 
         # Category and Sub-category on the same line
         col1, col2 = st.columns(2)
@@ -293,7 +293,7 @@ def main():
 
     # Document upload section outside the box
     with st.container():
-        st.markdown('<div class="box">', unsafe_allow_html=True)
+        # st.markdown('<div class="box">', unsafe_allow_html=True)
         uploaded_file = st.file_uploader("Upload Document")
         if st.button("Validate"):
             if uploaded_file is not None:
