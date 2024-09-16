@@ -238,11 +238,14 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 def main():
     st.title("Contract Clause Generator")
 
-    # Apply custom CSS for box structure, background color, and button styling
+    # Apply custom CSS for box structure, background colors, and button styling
     st.markdown("""
     <style>
+    .main {
+        background-color: #1a1a1a; /* Page background close to black */
+    }
     .box {
-        background-color: #f5f7fa;
+        background-color: #001f3f; /* Navy blue form field background */
         padding: 20px;
         border-radius: 10px;
         border: 1px solid #ccc;
@@ -256,29 +259,23 @@ def main():
         border: 1px solid #ccc;
         padding: 10px;
         width: 100%;
-        height: 100px; /* Adjusted height */
     }
     .stButton button {
-        background-color: #007BFF;
-        color: white;
-        padding: 10px 20px;
+        background-color: #ff4136; /* Red button background */
+        color: white; /* White button text */
+        width: 100%; /* Full width of form fields */
+        padding: 10px;
         font-size: 16px;
-        border-radius: 8px;
+        border-radius: 5px;
         border: none;
-        cursor: pointer;
-    }
-    .stButton button:hover {
-        background-color: #0056b3;
-    }
-    body {
-        background-color: #e5e7eb;  /* Light page background */
     }
     </style>
     """, unsafe_allow_html=True)
 
     # Start of the box structure
     with st.container():
-        
+        st.markdown('<div class="box">', unsafe_allow_html=True)
+
         # Category and Sub-category on the same line
         col1, col2 = st.columns(2)
         with col1:
@@ -295,7 +292,7 @@ def main():
         # Display prompt field after Clause Type selection
         if clause_type != "Select Clause Type":
             prompt_text = f"Generate a contract clause for {category} -> {sub_category} -> {clause_type}."
-            st.text_area("Prompt", value=prompt_text, height=50)  # Adjusted height for smaller prompt field
+            st.text_area("Prompt", value=prompt_text, height=80)  # Adjusted height to match content
 
         # Generate button
         if st.button("Generate"):
@@ -313,7 +310,6 @@ def main():
                 st.success("Document validated successfully!")
             else:
                 st.warning("Please upload a document.")
-        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
