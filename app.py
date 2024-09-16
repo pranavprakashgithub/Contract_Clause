@@ -238,49 +238,43 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 def main():
     st.title("Contract Clause Generator")
 
-    # Apply custom CSS for background colors, button styles, and text colors
+    # Apply custom CSS for box structure, background colors, and button styling
     st.markdown("""
     <style>
-    /* Page background color */
-    body {
-        background-color: #2c2f33;
+    .main {
+        background-color: #1a1a1a; /* Page background close to black */
     }
-
-    /* Form container background (navy blue) */
-    .form-container {
-        background-color: #1e3d59;
+    .box {
+        background-color: #001f3f; /* Navy blue form field background */
         padding: 20px;
         border-radius: 10px;
         border: 1px solid #ccc;
         margin-bottom: 20px;
     }
-
-    /* Text color for all elements */
-    label, .stSelectbox, .stTextArea textarea, .stText {
-        color: white;
-    }
-
-    /* Full-width Generate button */
-    .stButton button {
-        width: 100%;
-        background-color: #536875;
-        color: white;
-        font-size: 16px;
+    .stTextArea textarea {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333;
+        background-color: #f5f5f5;
+        border: 1px solid #ccc;
         padding: 10px;
-        border-radius: 5px;
+        width: 100%;
     }
-
-    /* Hover state for button */
-    .stButton button:hover {
-        background-color: #455a64;
-        color: white;
+    .stButton button {
+        background-color: #ff4136; /* Red button background */
+        color: white; /* White button text */
+        width: 100%; /* Full width of form fields */
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Form container with navy blue background
+    # Start of the box structure
     with st.container():
-        st.markdown('<div class="form-container">', unsafe_allow_html=True)
+        st.markdown('<div class="box">', unsafe_allow_html=True)
 
         # Category and Sub-category on the same line
         col1, col2 = st.columns(2)
@@ -298,7 +292,7 @@ def main():
         # Display prompt field after Clause Type selection
         if clause_type != "Select Clause Type":
             prompt_text = f"Generate a contract clause for {category} -> {sub_category} -> {clause_type}."
-            st.text_area("Prompt", value=prompt_text, height=100)
+            st.text_area("Prompt", value=prompt_text, height=80)  # Adjusted height to match content
 
         # Generate button
         if st.button("Generate"):
@@ -306,15 +300,16 @@ def main():
             generated_clause = "Generated clause based on the selected options."
             st.text_area("Generated Clause", value=generated_clause, height=200)
 
-        st.markdown('</div>', unsafe_allow_html=True)  # End of the form container
+        st.markdown('</div>', unsafe_allow_html=True)  # End of the box
 
-    # Document upload section outside the form container
-    uploaded_file = st.file_uploader("Upload Document")
-    if st.button("Validate"):
-        if uploaded_file is not None:
-            st.success("Document validated successfully!")
-        else:
-            st.warning("Please upload a document.")
+    # Document upload section outside the box
+    with st.container():
+        uploaded_file = st.file_uploader("Upload Document")
+        if st.button("Validate"):
+            if uploaded_file is not None:
+                st.success("Document validated successfully!")
+            else:
+                st.warning("Please upload a document.")
 
 if __name__ == "__main__":
     main()
