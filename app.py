@@ -248,12 +248,17 @@ def main():
     h1 {
     color : white;
     }
-    .form-container label {
-        color: #FFFFFF; /* This changes the label color inside the form container */
+    .form-container {
+        background-color: #1e3d59;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
     }
+
     label, .stSelectbox label, .stTextArea label, .stFileUploader label {
         color: white; /* Change this to your desired color */
-        text-size: 25px;
+        font-size: 25px;
     }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
