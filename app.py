@@ -248,8 +248,8 @@ def main():
     h1 {
     color : white;
     }
-    label {
-    color : white;
+    .form-container label {
+        color: #FFFFFF; /* This changes the label color inside the form container */
     }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
@@ -278,6 +278,7 @@ def main():
 
     # Start of the box structure
     with st.container():
+        st.markdown('<div class="form-container">', unsafe_allow_html=True)
         
         # Category and Sub-category on the same line
         col1, col2 = st.columns(2)
