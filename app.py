@@ -248,13 +248,6 @@ def main():
     h1 {
     color : white;
     }
-    .form-container {
-        background-color: #1e3d59;
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        margin-bottom: 20px;
-    }
 
     label, .stSelectbox label, .stTextArea label, .stFileUploader label {
         color: white; /* Change this to your desired color */
@@ -279,7 +272,7 @@ def main():
         border: none;
     }
     .stButton button:hover {
-    background-color: #455a64;  /* Darker background on hover */
+    background-color: #8B0000;  /* Darker background on hover */
     color: white;  /* Ensure text stays white on hover */
 }
     </style>
