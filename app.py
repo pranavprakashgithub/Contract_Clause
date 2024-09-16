@@ -251,6 +251,7 @@ def main():
         border-radius: 10px;
         border: 1px solid #ccc;
         margin-bottom: 20px;
+        color: white;
     }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
