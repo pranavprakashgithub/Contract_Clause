@@ -245,14 +245,14 @@ def main():
         background-color: #1a1a1a; /* Page background close to black */
         color : white;
     }
-    .stContainer container {
-        background-color: #001f3f; /* Navy blue form field background */
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        margin-bottom: 20px;
-        color: white;
-    }
+    # .stContainer container {
+    #     background-color: #001f3f; /* Navy blue form field background */
+    #     padding: 20px;
+    #     border-radius: 10px;
+    #     border: 1px solid #ccc;
+    #     margin-bottom: 20px;
+    #     color: white;
+    # }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
         font-size: 14px;
