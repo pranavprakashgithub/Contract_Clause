@@ -243,6 +243,7 @@ def main():
     <style>
     .main {
         background-color: #1a1a1a; /* Page background close to black */
+        color : white;
     }
     .box {
         background-color: #001f3f; /* Navy blue form field background */
@@ -274,8 +275,7 @@ def main():
 
     # Start of the box structure
     with st.container():
-        # st.markdown('<div class="box">', unsafe_allow_html=True)
-
+        
         # Category and Sub-category on the same line
         col1, col2 = st.columns(2)
         with col1:
