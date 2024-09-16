@@ -106,26 +106,26 @@
 
 
 import streamlit as st
-import os
-import torch
+# import os
+# import torch
 
-# Force torch to use CPU
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-torch.device('cpu')
+# # Force torch to use CPU
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# torch.device('cpu')
 
-# Monkey-patch unsloth to bypass the CUDA check
-import torch.cuda
+# # Monkey-patch unsloth to bypass the CUDA check
+# import torch.cuda
 
-def no_cuda():
-    return False
+# def no_cuda():
+#     return False
 
-torch.cuda.is_available = no_cuda
-torch.cuda.get_device_capability = lambda: (0, 0)
+# torch.cuda.is_available = no_cuda
+# torch.cuda.get_device_capability = lambda: (0, 0)
 
-from unsloth import FastLanguageModel
+# from unsloth import FastLanguageModel
 
-# Now proceed with loading the model as usual
-model = FastLanguageModel()
+# # Now proceed with loading the model as usual
+# model = FastLanguageModel()
 
 # Continue with your application code
 
