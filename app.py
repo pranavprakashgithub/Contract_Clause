@@ -51,52 +51,149 @@
 #     # Here you can add the logic to handle the generation based on the inputs
 #     st.success("Generation process started...")
 
+---
+
+
+# import streamlit as st
+
+# # Sample prompts based on clause type
+# CLAUSE_PROMPTS = {
+#     "Confidentiality": "Draft a confidentiality clause for a Collaborative Research Agreement. Ensure both parties safeguard shared information.",
+#     "Termination": "Draft a termination clause that outlines the grounds for terminating a Licensing Agreement.",
+#     "Liability": "Write a liability clause for a Manufacturing Agreement. Specify limitations and indemnifications for both parties.",
+#     "Payment Terms": "Create a payment terms clause for a Supply Agreement, specifying timelines and conditions.",
+#     "Governing Law": "Generate a governing law clause for an Intellectual Property Agreement, specifying jurisdiction."
+# }
+
+# # Options for dropdowns
+# CATEGORY_OPTIONS = {
+#     "Select Category": [],
+#     "Research & Development": ["Collaborative Research", "Sponsored Research"],
+#     "Licensing": ["In-Licensing", "Out-Licensing"],
+#     "Manufacturing & Supply": ["Contract Manufacturing", "Supply"],
+#     "Intellectual Property": ["IP Assignment", "Patent Licensing"],
+#     "Confidentiality & NDA": ["Sales & Service"]
+# }
+
+# CLAUSE_TYPES = ["Select Clause Type", "Confidentiality", "Termination", "Liability", "Payment Terms", "Governing Law"]
+
+# # UI Configuration
+
+# st.title("Contract Clause Generator")
+
+# # Step 1: Category dropdown
+# category = st.selectbox("Category", options=["Select Category"] + list(CATEGORY_OPTIONS.keys())[1:])
+
+# if category and category != "Select Category":
+#     # Step 2: Sub-category dropdown appears after category selection
+#     sub_category = st.selectbox("Sub-category", options=["Select Sub-category"] + CATEGORY_OPTIONS[category])
+
+#     if sub_category and sub_category != "Select Sub-category":
+#         # Step 3: Clause type dropdown appears after sub-category selection
+#         clause_type = st.selectbox("Clause Type", options=CLAUSE_TYPES)
+
+#         if clause_type and clause_type != "Select Clause Type":
+#             # Step 4: Prompt field appears with the pre-filled text based on clause type
+#             prompt = CLAUSE_PROMPTS.get(clause_type, "No prompt available for this clause.")
+#             st.text_area("Prompt", value=prompt, height=150)
+
+# # Generate Button
+# if st.button("Generate"):
+#     st.success("Generating response for the selected clause... (Integration with LLM pending)")
+
+
+---
 
 import streamlit as st
+from unsloth import FastLanguageModel
+import torch
 
-# Sample prompts based on clause type
-CLAUSE_PROMPTS = {
-    "Confidentiality": "Draft a confidentiality clause for a Collaborative Research Agreement. Ensure both parties safeguard shared information.",
-    "Termination": "Draft a termination clause that outlines the grounds for terminating a Licensing Agreement.",
-    "Liability": "Write a liability clause for a Manufacturing Agreement. Specify limitations and indemnifications for both parties.",
-    "Payment Terms": "Create a payment terms clause for a Supply Agreement, specifying timelines and conditions.",
-    "Governing Law": "Generate a governing law clause for an Intellectual Property Agreement, specifying jurisdiction."
-}
+# Set page configuration and title
+st.set_page_config(page_title="Contract Clause Generator", layout="centered")
 
-# Options for dropdowns
-CATEGORY_OPTIONS = {
-    "Select Category": [],
-    "Research & Development": ["Collaborative Research", "Sponsored Research"],
-    "Licensing": ["In-Licensing", "Out-Licensing"],
-    "Manufacturing & Supply": ["Contract Manufacturing", "Supply"],
-    "Intellectual Property": ["IP Assignment", "Patent Licensing"],
-    "Confidentiality & NDA": ["Sales & Service"]
-}
+# Custom CSS for styling the box and button
+st.markdown("""
+    <style>
+    .box {
+        background-color: #f0f0f5;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .full-width-button {
+        width: 100%;
+        background-color: #ff4b4b;
+        color: white;
+        font-size: 18px;
+        padding: 12px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-CLAUSE_TYPES = ["Select Clause Type", "Confidentiality", "Termination", "Liability", "Payment Terms", "Governing Law"]
-
-# UI Configuration
-
+# Title
 st.title("Contract Clause Generator")
 
-# Step 1: Category dropdown
-category = st.selectbox("Category", options=["Select Category"] + list(CATEGORY_OPTIONS.keys())[1:])
+# Container for dropdowns and prompt
+with st.container():
+    st.markdown("<div class='box'>", unsafe_allow_html=True)
+    
+    # Category and Sub-category in the same line
+    col1, col2 = st.columns(2)
+    
+    category = col1.selectbox("Category", [
+        "Select Category", "Research & Development", "Licensing", "Manufacturing & Supply", 
+        "Intellectual Property", "Confidentiality and Non-disclosure"
+    ])
+    
+    # Sub-category logic based on category selection
+    sub_category_options = {
+        "Research & Development": ["Collaborative Research", "Sponsored Research"],
+        "Licensing": ["In-Licensing", "Out-Licensing"],
+        "Manufacturing & Supply": ["Contract Manufacturing", "Supply"],
+        "Intellectual Property": ["IP Assignment", "Patent Licensing"],
+        "Confidentiality and Non-disclosure": ["Sales & Service"],
+    }
+    
+    if category != "Select Category":
+        sub_category = col2.selectbox("Sub-category", ["Select Sub-category"] + sub_category_options[category])
+    else:
+        sub_category = col2.selectbox("Sub-category", ["Select Sub-category"])
 
-if category and category != "Select Category":
-    # Step 2: Sub-category dropdown appears after category selection
-    sub_category = st.selectbox("Sub-category", options=["Select Sub-category"] + CATEGORY_OPTIONS[category])
+    # Clause type dropdown
+    if sub_category != "Select Sub-category":
+        clause_type = st.selectbox("Clause Type", [
+            "Select Clause", "Confidentiality", "Termination", "Liability", 
+            "Payment Terms", "Governing Law"
+        ])
+    else:
+        clause_type = st.selectbox("Clause Type", ["Select Clause"])
+    
+    # Prompt field appears after clause is selected
+    if clause_type != "Select Clause":
+        prompt = f"Generate a {clause_type} clause based on {sub_category} in {category}."
+        st.text_area("Prompt", value=prompt, height=150)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    if sub_category and sub_category != "Select Sub-category":
-        # Step 3: Clause type dropdown appears after sub-category selection
-        clause_type = st.selectbox("Clause Type", options=CLAUSE_TYPES)
+# File uploader and validate button
+with st.container():
+    st.file_uploader("Upload a document for validation", type=["txt", "pdf", "docx"])
 
-        if clause_type and clause_type != "Select Clause Type":
-            # Step 4: Prompt field appears with the pre-filled text based on clause type
-            prompt = CLAUSE_PROMPTS.get(clause_type, "No prompt available for this clause.")
-            st.text_area("Prompt", value=prompt, height=150)
+    st.markdown("<div class='button-container'>", unsafe_allow_html=True)
+    st.button("Validate", key="validate_button")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-# Generate Button
-if st.button("Generate"):
-    st.success("Generating response for the selected clause... (Integration with LLM pending)")
+# Generate button centered below the form
+st.markdown("<div class='button-container'>", unsafe_allow_html=True)
+if st.button("Generate", key="generate_button"):
+    # Placeholder LLM integration
+    st.success("LLM output generated! (LLM integration will be connected here)")
+st.markdown("</div>", unsafe_allow_html=True)
+
 
 
