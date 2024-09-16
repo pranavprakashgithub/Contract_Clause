@@ -248,6 +248,9 @@ def main():
     h1 {
     color : white;
     }
+    label {
+    color : white;
+    }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
         font-size: 14px;
