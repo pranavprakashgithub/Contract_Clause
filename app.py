@@ -238,6 +238,22 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 def main():
     st.title("Contract Clause Generator")
 
+    # Set a CSS style
+    st.markdown("""
+    <style>
+    .stTextArea textarea {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333;
+        background-color: #f5f5f5;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 100%;
+        height: 200px;
+    }
+    </style>
+    """)
+
     # Category selection
     category = st.selectbox("Category", ["Select Category"] + list(categories.keys()))
 
@@ -248,7 +264,7 @@ def main():
     clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
 
     # Prompt (dynamically generated based on selected options)
-    prompt = st.empty()
+    prompt = st.text_area("Prompt", height=200)
     if clause_type != "Select Clause Type":
         prompt.text(f"**Prompt:**\n\nGenerate a contract clause for {category} -> {sub_category} -> {clause_type}.")
 
