@@ -238,84 +238,83 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 def main():
     st.title("Contract Clause Generator")
 
-    # Apply custom CSS for the box structure, colors, and button styles
+    # Apply custom CSS for background colors, button styles, and text colors
     st.markdown("""
     <style>
-    .dropdown-row {
-        background-color: #344550;
-        border-radius: 10px;
+    /* Page background color */
+    body {
+        background-color: #2c2f33;
+    }
+
+    /* Form container background (navy blue) */
+    .form-container {
+        background-color: #1e3d59;
         padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
         margin-bottom: 20px;
     }
-    .stTextInput, .stSelectbox, .stTextArea {
-        background-color: #1b2b34;
-        color: #ffffff;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
+
+    /* Text color for all elements */
+    label, .stSelectbox, .stTextArea textarea, .stText {
+        color: white;
     }
-    .stTextArea textarea {
-        color: #ffffff;
-    }
-    .generate-button {
+
+    /* Full-width Generate button */
+    .stButton button {
+        width: 100%;
         background-color: #536875;
-        color: #ffffff;
+        color: white;
         font-size: 16px;
         padding: 10px;
-        width: 100%;
-        border: none;
         border-radius: 5px;
     }
-    .generate-button:hover {
-        background-color: #405d77;
-        color: #ffffff;
-    }
-    .stTextArea textarea {
-        height: 100px; /* Adjusts the size of the prompt area */
-    }
-    body {
-        background-color: #1e1e1e; /* Page background color */
-        color: #ffffff; /* Text color */
+
+    /* Hover state for button */
+    .stButton button:hover {
+        background-color: #455a64;
+        color: white;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Start of the form
+    # Form container with navy blue background
     with st.container():
-        
+        st.markdown('<div class="form-container">', unsafe_allow_html=True)
+
         # Category and Sub-category on the same line
         col1, col2 = st.columns(2)
         with col1:
-            category = st.selectbox("Category", ["Select Category"] + list(categories.keys()), key='category')
+            category = st.selectbox("Category", ["Select Category"] + list(categories.keys()))
         with col2:
-            sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []), key='sub_category')
+            sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []))
 
         # Clause type dropdown
         if sub_category != "Select Sub-Category":
-            clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types, key='clause_type')
+            clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
         else:
             clause_type = "Select Clause Type"
 
         # Display prompt field after Clause Type selection
         if clause_type != "Select Clause Type":
             prompt_text = f"Generate a contract clause for {category} -> {sub_category} -> {clause_type}."
-            st.text_area("Prompt", value=prompt_text, height=100, key='prompt')
+            st.text_area("Prompt", value=prompt_text, height=100)
 
         # Generate button
-        generate_button = st.button("Generate", key='generate')
-        if generate_button:
+        if st.button("Generate"):
             # Placeholder logic for clause generation
             generated_clause = "Generated clause based on the selected options."
             st.text_area("Generated Clause", value=generated_clause, height=200)
 
-    # Document upload section outside the box
-    with st.container():
-        uploaded_file = st.file_uploader("Upload Document")
-        validate_button = st.button("Validate")
-        if validate_button:
-            if uploaded_file is not None:
-                st.success("Document validated successfully!")
-            else:
-                st.warning("Please upload a document.")
+        st.markdown('</div>', unsafe_allow_html=True)  # End of the form container
+
+    # Document upload section outside the form container
+    uploaded_file = st.file_uploader("Upload Document")
+    if st.button("Validate"):
+        if uploaded_file is not None:
+            st.success("Document validated successfully!")
+        else:
+            st.warning("Please upload a document.")
 
 if __name__ == "__main__":
     main()
