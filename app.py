@@ -105,23 +105,24 @@
 
 
 import streamlit as st
+
+st.write(f"CUDA Available: {torch.cuda.is_available()}")
+st.write(f"Device: {torch.device('cpu')}")
+
 import os
+# Disable CUDA before any import that might initialize PyTorch
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 import torch
-
-# Set PyTorch to use only CPU
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
-torch.cuda.is_available = lambda: False
-
 from unsloth import FastLanguageModel
 
+# Ensure torch does not use CUDA
+torch.device('cpu')
+
+# Then initialize your FastLanguageModel (or any other model-related code)
+model = FastLanguageModel()
+
 # Continue with your application code
-
-# Initialize the model with CPU
-model = FastLanguageModel(device=device)
-
-
-# Initialize LLM (assuming FastLanguageModel needs device argument)
-model = FastLanguageModel(device=device)
 
 # Set page configuration and title
 st.set_page_config(page_title="Contract Clause Generator", layout="centered")
