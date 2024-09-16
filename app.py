@@ -222,6 +222,10 @@
 
 
 import streamlit as st
+import requests
+
+# Define the URL of your API server
+COLAB_SERVER_URL = "https://<your-ngrok-id>.ngrok.io/generate"  # Replace with the actual ngrok URL
 
 # Define category, sub-category, and clause type options
 categories = {
@@ -234,7 +238,13 @@ categories = {
 
 clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", "Governing Law"]
 
-# Create Streamlit app
+# Function to generate prompt based on user selections
+def generate_prompt(category, sub_category, clause_type):
+    if category and sub_category and clause_type:
+        return f"Generate a {clause_type} clause for {category} -> {sub_category}."
+    return ""
+
+# Streamlit app
 def main():
     st.title("GenAI Contract Clause Generator")
 
@@ -246,9 +256,8 @@ def main():
         color : white;
     }
     h1 {
-    color : white;
+        color : white;
     }
-
     label, .stSelectbox label, .stTextArea label, .stFileUploader label {
         color: white; /* Change this to your desired color */
         font-size: 25px;
@@ -272,9 +281,9 @@ def main():
         border: none;
     }
     .stButton button:hover {
-    background-color: #8B0000;  /* Darker background on hover */
-    color: white;  /* Ensure text stays white on hover */
-}
+        background-color: #8B0000;  /* Darker background on hover */
+        color: white;  /* Ensure text stays white on hover */
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -290,21 +299,33 @@ def main():
             sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []))
 
         # Clause type dropdown
+        clause_type = "Select Clause Type"
+        prompt_text = ""  # Initialize prompt_text variable
         if sub_category != "Select Sub-Category":
             clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
-        else:
-            clause_type = "Select Clause Type"
+            if clause_type != "Select Clause Type":
+                # Generate the prompt based on selections
+                prompt_text = generate_prompt(category, sub_category, clause_type)
 
         # Display prompt field after Clause Type selection
-        if clause_type != "Select Clause Type":
-            prompt_text = f"Generate a contract clause for {category} -> {sub_category} -> {clause_type}."
-            st.text_area("Prompt", value=prompt_text, height=80)  # Adjusted height to match content
+        st.text_area("Prompt", value=prompt_text, height=80)  # Adjusted height to match content
 
         # Generate button
         if st.button("Generate"):
-            # Placeholder logic for clause generation
-            generated_clause = "Generated clause based on the selected options."
-            st.text_area("Generated Clause", value=generated_clause, height=200)
+            # Send request to the Colab server API
+            try:
+                response = requests.post(COLAB_SERVER_URL, json={
+                    'instruction': f"Generate a {clause_type} clause for {category} -> {sub_category}.",
+                    'input_context': prompt_text
+                })
+
+                if response.status_code == 200:
+                    generated_clause = response.json().get('response', 'No response received.')
+                    st.text_area("Generated Clause", value=generated_clause, height=200)
+                else:
+                    st.error("Error in generating clause: " + response.text)
+            except Exception as e:
+                st.error("An error occurred while connecting to the server: " + str(e))
 
         st.markdown('</div>', unsafe_allow_html=True)  # End of the box
 
