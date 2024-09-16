@@ -238,9 +238,15 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 def main():
     st.title("Contract Clause Generator")
 
-    # Set a CSS style
+    # Set custom CSS styles for the box-like structure and fields
     st.markdown("""
     <style>
+    .box {
+        background-color: #f0f0f5;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
         font-size: 14px;
@@ -251,39 +257,44 @@ def main():
         width: 100%;
         height: 200px;
     }
+    .dropdown {
+        margin-bottom: 15px;
+    }
     </style>
-    """)
+    """, unsafe_allow_html=True)
 
-    # Category selection
-    category = st.selectbox("Category", ["Select Category"] + list(categories.keys()))
+    # Display category and sub-category in the same line using columns
+    with st.container():
+        with st.markdown('<div class="box">', unsafe_allow_html=True):
+            col1, col2 = st.columns(2)
+            with col1:
+                category = st.selectbox("Category", ["Select Category"] + list(categories.keys()), key="category")
+            with col2:
+                sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []), key="subcategory")
 
-    # Sub-category selection (dynamically updated based on category)
-    sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []))
+            # Clause type selection
+            clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types, key="clause_type")
 
-    # Clause type selection (dynamically updated based on sub-category)
-    clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
+            # Prompt field (shows up only when clause type is selected)
+            if clause_type != "Select Clause Type":
+                prompt_text = f"**Prompt:**\n\nGenerate a contract clause for {category} -> {sub_category} -> {clause_type}."
+                st.markdown(f"<div class='box'><p style='background-color:#ffffff;padding:10px;'>{prompt_text}</p></div>", unsafe_allow_html=True)
 
-    # Prompt (dynamically generated based on selected options)
-    prompt = st.empty()
-    if clause_type != "Select Clause Type":
-        prompt.text(f"**Prompt:**\n\nGenerate a contract clause for {category} -> {sub_category} -> {clause_type}.")
+            # Generate button
+            if st.button("Generate"):
+                # Placeholder logic for clause generation (replace with your LLM logic)
+                generated_clause = "Generated clause based on the selected options."
+                st.text_area("Generated Clause", value=generated_clause, height=200)
 
-    # Generate button
-    if st.button("Generate"):
-        # Generate clause (replace with your actual logic)
-        generated_clause = "Generated clause based on the selected options."
-        st.text_area("Generated Clause", value=generated_clause, height=200)
-
-    # Document upload
-    uploaded_file = st.file_uploader("Upload Document")
-
-    # Validate button
-    if st.button("Validate"):
-        if uploaded_file is not None:
-            # Perform validation here (e.g., check file format, size)
-            st.success("Document validated successfully!")
-        else:
-            st.warning("Please upload a document.")
+    # Document upload with validation
+    with st.container():
+        with st.markdown('<div class="box">', unsafe_allow_html=True):
+            uploaded_file = st.file_uploader("Upload Document")
+            if st.button("Validate"):
+                if uploaded_file is not None:
+                    st.success("Document validated successfully!")
+                else:
+                    st.warning("Please upload a document.")
 
 if __name__ == "__main__":
     main()
