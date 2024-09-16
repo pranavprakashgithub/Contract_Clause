@@ -105,8 +105,16 @@
 
 
 import streamlit as st
-from unsloth import FastLanguageModel
 import torch
+import os
+from unsloth import FastLanguageModel
+
+# Force PyTorch to use CPU
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+device = torch.device("cpu")
+
+# Initialize LLM (assuming FastLanguageModel needs device argument)
+model = FastLanguageModel(device=device)
 
 # Set page configuration and title
 st.set_page_config(page_title="Contract Clause Generator", layout="centered")
