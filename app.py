@@ -238,14 +238,15 @@ clause_types = ["Confidentiality", "Termination", "Liability", "Payment Terms", 
 def main():
     st.title("Contract Clause Generator")
 
-    # Set custom CSS styles for the box-like structure and fields
+    # Apply custom CSS for box structure and background color
     st.markdown("""
     <style>
     .box {
-        background-color: #f0f0f5;
+        background-color: #f5f7fa;
         padding: 20px;
         border-radius: 10px;
         border: 1px solid #ccc;
+        margin-bottom: 20px;
     }
     .stTextArea textarea {
         font-family: Arial, sans-serif;
@@ -257,44 +258,49 @@ def main():
         width: 100%;
         height: 200px;
     }
-    .dropdown {
-        margin-bottom: 15px;
-    }
     </style>
     """, unsafe_allow_html=True)
 
-    # Display category and sub-category in the same line using columns
+    # Start of the box structure
     with st.container():
-        with st.markdown('<div class="box">', unsafe_allow_html=True):
-            col1, col2 = st.columns(2)
-            with col1:
-                category = st.selectbox("Category", ["Select Category"] + list(categories.keys()), key="category")
-            with col2:
-                sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []), key="subcategory")
+        st.markdown('<div class="box">', unsafe_allow_html=True)
 
-            # Clause type selection
-            clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types, key="clause_type")
+        # Category and Sub-category on the same line
+        col1, col2 = st.columns(2)
+        with col1:
+            category = st.selectbox("Category", ["Select Category"] + list(categories.keys()))
+        with col2:
+            sub_category = st.selectbox("Sub-Category", ["Select Sub-Category"] + categories.get(category, []))
 
-            # Prompt field (shows up only when clause type is selected)
-            if clause_type != "Select Clause Type":
-                prompt_text = f"**Prompt:**\n\nGenerate a contract clause for {category} -> {sub_category} -> {clause_type}."
-                st.markdown(f"<div class='box'><p style='background-color:#ffffff;padding:10px;'>{prompt_text}</p></div>", unsafe_allow_html=True)
+        # Clause type dropdown
+        if sub_category != "Select Sub-Category":
+            clause_type = st.selectbox("Clause Type", ["Select Clause Type"] + clause_types)
+        else:
+            clause_type = "Select Clause Type"
 
-            # Generate button
-            if st.button("Generate"):
-                # Placeholder logic for clause generation (replace with your LLM logic)
-                generated_clause = "Generated clause based on the selected options."
-                st.text_area("Generated Clause", value=generated_clause, height=200)
+        # Display prompt field after Clause Type selection
+        if clause_type != "Select Clause Type":
+            prompt_text = f"Generate a contract clause for {category} -> {sub_category} -> {clause_type}."
+            st.text_area("Prompt", value=prompt_text, height=100)
 
-    # Document upload with validation
+        # Generate button
+        if st.button("Generate"):
+            # Placeholder logic for clause generation
+            generated_clause = "Generated clause based on the selected options."
+            st.text_area("Generated Clause", value=generated_clause, height=200)
+
+        st.markdown('</div>', unsafe_allow_html=True)  # End of the box
+
+    # Document upload section outside the box
     with st.container():
-        with st.markdown('<div class="box">', unsafe_allow_html=True):
-            uploaded_file = st.file_uploader("Upload Document")
-            if st.button("Validate"):
-                if uploaded_file is not None:
-                    st.success("Document validated successfully!")
-                else:
-                    st.warning("Please upload a document.")
+        st.markdown('<div class="box">', unsafe_allow_html=True)
+        uploaded_file = st.file_uploader("Upload Document")
+        if st.button("Validate"):
+            if uploaded_file is not None:
+                st.success("Document validated successfully!")
+            else:
+                st.warning("Please upload a document.")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
